@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jaguar Snacks | Egypt's Boldest Corn Snacks</title>
+    <!-- Fonts -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Poppins:wght@400;900&display=swap');
+
+        :root {
+            --jaguar-black: #0D0D0D;
+            --jaguar-gold: #F5A800;
+            --jaguar-orange: #E8400C;
+            --jaguar-cream: #FDF7EE;
+            --jaguar-dark: #151515;
+            --font-en: 'Poppins', 'Helvetica Neue', Arial, sans-serif;
+            --font-ar: 'Cairo', sans-serif;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--jaguar-black);
+            color: var(--jaguar-cream);
+            font-family: var(--font-en);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        [dir="rtl"] {
+            font-family: var(--font-ar);
+        }
+
+        /* Utility */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .gold { color: var(--jaguar-gold); }
+        .orange { color: var(--jaguar-orange); }
+        .bg-dark { background-color: var(--jaguar-dark); }
+        .btn {
+            display: inline-block;
+            padding: 14px 30px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+            text-transform: uppercase;
+            border-radius: 4px;
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
+            text-align: center;
+            letter-spacing: 0.5px;
+        }
+        .btn-gold { background-color: var(--jaguar-gold); color: var(--jaguar-black); }
+        .btn-orange { background-color: var(--jaguar-orange); color: white; }
+        .btn-cream { background-color: var(--jaguar-cream); color: var(--jaguar-black); }
+        .btn-outline { border: 2px solid var(--jaguar-gold); color: var(--jaguar-gold); background: transparent; }
+        .btn:hover { transform: translateY(-2px); opacity: 0.9; }
+
+        /* Component Styles */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(13, 13, 13, 0.98);
+            height: 80px;
+            display: flex;
+            align-items: center;
+            transition: var(--transition);
+            border-bottom: 1px solid rgba(245, 168, 0, 0.1);
+        }
+        nav.scrolled {
+            height: 70px;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(245, 168, 0, 0.3);
+        }
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--jaguar-gold);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+        }
+        .logo span {
+            color: var(--jaguar-cream);
+            font-weight: 300;
+            font-size: 20px;
+            margin-left: 8px;
+        }
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+        .nav-links a {
+            color: var(--jaguar-cream);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: var(--transition);
+            opacity: 0.7;
+        }
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--jaguar-gold);
+            opacity: 1;
+        }
+
+        /* Routing Container */
+        #view-container {
+            min-height: 100vh;
+            padding-top: 80px;
+        }
+
+        /* Home Page - Bento Hero */
+        .hero {
+            height: calc(100vh - 80px);
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            background: radial-gradient(circle at 70% 50%, rgba(245, 168, 0, 0.05) 0%, transparent 50%);
+        }
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            align-items: center;
+            gap: 40px;
+            z-index: 10;
+        }
+        .hero h1 {
+            font-size: clamp(48px, 8vw, 84px);
+            line-height: 0.95;
+            font-weight: 900;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+        .hero .subtitle-wrap {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+        .hero .subtitle {
+            font-family: var(--font-ar);
+            font-size: 24px;
+            font-weight: 300;
+            color: var(--jaguar-cream);
+        }
+        .badge-latest {
+            font-size: 12px;
+            background: var(--jaguar-orange);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        .hero-image-wrap {
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+        .hero-image-wrap img {
+            width: 120%;
+            transform: rotate(-5deg);
+            filter: drop-shadow(0 25px 50px rgba(0,0,0,0.6));
+            animation: floating 6s ease-in-out infinite alternate;
+        }
+        @keyframes floating {
+            from { transform: rotate(-5deg) scale(1); }
+            to { transform: rotate(-2deg) scale(1.05) translateY(-20px); }
+        }
+
+        /* Ticker - Bento Style */
+        .ticker {
+            background: var(--jaguar-gold);
+            height: 48px;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .ticker-content {
+            display: inline-block;
+            animation: ticker 25s linear infinite;
+        }
+        .ticker-item {
+            display: inline-block;
+            padding: 0 40px;
+            font-weight: 900;
+            color: var(--jaguar-black);
+            text-transform: uppercase;
+            font-size: 13px;
+            letter-spacing: 2px;
+        }
+        @keyframes ticker {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Product Bento Grid */
+        .product-bento {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1px;
+            background: rgba(245, 168, 0, 0.1);
+            border-top: 1px solid rgba(245, 168, 0, 0.2);
+            border-bottom: 1px solid rgba(245, 168, 0, 0.2);
+        }
+        .bento-card {
+            background: var(--jaguar-black);
+            padding: 40px 25px;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid rgba(245, 168, 0, 0.05);
+        }
+        .bento-card:last-child { border-right: none; }
+        .bento-card:hover {
+            background: #111;
+        }
+        .bento-card img {
+            width: 100%;
+            height: 140px;
+            object-fit: contain;
+            margin-bottom: 25px;
+            transition: var(--transition);
+        }
+        .bento-card:hover img {
+            transform: scale(1.1) rotate(2deg);
+        }
+        .bento-card h3 {
+            color: var(--jaguar-gold);
+            font-size: 16px;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        .bento-card p {
+            font-size: 11px;
+            opacity: 0.7;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+        .bento-tags {
+            margin-top: auto;
+            display: flex;
+            gap: 6px;
+        }
+        .bento-tag {
+            background: #1a1a1a;
+            color: #777;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 2px;
+            text-transform: uppercase;
+        }
+
+        /* Sections */
+        .section-title {
+            text-align: center;
+            margin-bottom: 80px;
+            font-size: 48px;
+            font-weight: 900;
+            letter-spacing: -2px;
+            text-transform: uppercase;
+        }
+
+        /* Stories */
+        .story-section {
+            padding: 120px 0;
+            background: var(--jaguar-black);
+            border-bottom: 1px solid rgba(245, 168, 0, 0.1);
+        }
+        .story-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 100px;
+            align-items: center;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 50px;
+        }
+        .stat-box {
+            background: #111;
+            padding: 20px;
+            border-radius: 4px;
+            text-align: center;
+        }
+        .stat-num {
+            display: block;
+            font-size: 36px;
+            font-weight: 900;
+            color: var(--jaguar-gold);
+            line-height: 1;
+            margin-bottom: 5px;
+        }
+        .stat-box small {
+            text-transform: uppercase;
+            font-size: 10px;
+            letter-spacing: 1px;
+            opacity: 0.6;
+        }
+
+        /* Instagram Feed */
+        .insta-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 60px;
+        }
+        .insta-post {
+            aspect-ratio: 1;
+            background: #111;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(245, 168, 0, 0.1);
+            transition: var(--transition);
+        }
+        .insta-post:hover {
+            border-color: var(--jaguar-gold);
+            transform: scale(1.02);
+        }
+        .insta-post img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.8;
+            transition: var(--transition);
+        }
+        .insta-post:hover img { opacity: 1; }
+
+        /* Products Page */
+        .product-row {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 80px;
+            padding: 120px 0;
+            align-items: center;
+        }
+        .product-row:nth-child(even) {
+            direction: rtl;
+        }
+        .product-row:nth-child(even) .product-info {
+            direction: ltr; 
+        }
+        .product-row img {
+            width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+            filter: drop-shadow(0 20px 40px rgba(0,0,0,0.5));
+        }
+        .product-info h2 {
+            font-size: 48px;
+            font-weight: 900;
+            line-height: 0.9;
+            margin-bottom: 20px;
+            letter-spacing: -2px;
+        }
+        .flavor-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 30px 0;
+        }
+        .pill {
+            background: #181818;
+            color: var(--jaguar-cream);
+            padding: 6px 16px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 1px solid #333;
+        }
+
+        /* Quiz */
+        .quiz-container {
+            max-width: 800px;
+            margin: 60px auto;
+            background: #0f0f0f;
+            padding: 60px;
+            border-radius: 4px;
+            border: 1px solid rgba(245, 168, 0, 0.1);
+        }
+        .quiz-option {
+            background: #111;
+            padding: 24px;
+            margin-bottom: 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            border: 1px solid #222;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        .quiz-option:hover {
+            border-color: var(--jaguar-gold);
+            background: #151515;
+            padding-left: 32px;
+        }
+
+        /* Store Locator */
+        .platform-card {
+            background: #111;
+            padding: 60px 40px;
+            border-radius: 4px;
+            border: 1px solid #222;
+            text-align: center;
+            transition: var(--transition);
+        }
+        .platform-card:hover {
+            border-color: var(--jaguar-gold);
+            background: #151515;
+        }
+
+        /* Floating buttons */
+        .wa-btn {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            background: #25D366;
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            font-weight: 900;
+            z-index: 999;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--jaguar-black);
+            padding: 100px 0 50px;
+            border-top: 1px solid rgba(245, 168, 0, 0.1);
+        }
+
+        /* Reveal Animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: 0.8s all cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Mobile */
+        @media (max-width: 1024px) {
+            .hero-grid { grid-template-columns: 1fr; text-align: center; }
+            .hero .subtitle-wrap { justify-content: center; }
+            .hero h1 { font-size: 56px; }
+            .product-bento { grid-template-columns: repeat(2, 1fr); }
+            .product-row { grid-template-columns: 1fr; text-align: center; gap: 40px; }
+            .story-grid { grid-template-columns: 1fr; gap: 60px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav id="navbar">
+        <div class="container nav-content">
+            <a href="#home" class="logo">Jaguar <span>جاجوار</span></a>
+            <div class="nav-links">
+                <a href="#home" class="nav-link" data-route="home">Home</a>
+                <a href="#products" class="nav-link" data-route="products">Products</a>
+                <a href="#quiz" class="nav-link" data-route="quiz">Flavor Quiz</a>
+                <a href="#locator" class="nav-link" data-route="locator">Store Locator</a>
+                <a href="#contact" class="nav-link" data-route="contact">Contact</a>
+                <a href="#locator" class="btn btn-orange">Find a Store</a>
+            </div>
+        </div>
+    </nav>
+
+    <div id="view-container">
+        <!-- Views will be injected here -->
+    </div>
+
+    <a href="https://wa.me/201000000000" class="wa-btn" target="_blank">WA</a>
+
+    <footer>
+        <div class="container" style="text-align: center;">
+            <div class="logo" style="margin-bottom: 20px;">Jaguar</div>
+            <p style="opacity: 0.5; font-size: 13px;">© 2025 Jaguar Snacks — An Egypt Foods Group Brand. Production-ready Pitch Concept.</p>
+        </div>
+    </footer>
+
+    <!-- Templates -->
+    <script type="text/template" id="tpl-home">
+        <section class="hero">
+            <div class="container hero-grid">
+                <div>
+                    <h1>Egypt's Most <br><span class="gold">Bold</span> Corn Snack.</h1>
+                    <div class="subtitle-wrap">
+                        <p class="subtitle">جاجوار — جرّب الجرأة</p>
+                        <span class="badge-latest">LATEST RELEASE</span>
+                    </div>
+                    <div style="display: flex; gap: 20px;">
+                        <a href="#products" class="btn btn-outline">Explore Products</a>
+                        <a href="#quiz" class="btn btn-cream">Take Flavor Quiz</a>
+                    </div>
+                </div>
+                <div class="hero-image-wrap">
+                    <img src="https://egyptfoodsgroup.com/wp-content/uploads/2025/09/jaguar-core-1024x423.png" alt="Jaguar Core">
+                </div>
+            </div>
+        </section>
+
+        <div class="ticker">
+            <div class="ticker-content">
+                <span class="ticker-item">Leading Corn Snack Brand in Egypt • 5 Premium Product Lines • Launched 2022 — Growing Fast • Available on Carrefour, Amazon.eg, Talabat • Egypt Foods Group Brand • Innovation & Quality •</span>
+                <span class="ticker-item">Leading Corn Snack Brand in Egypt • 5 Premium Product Lines • Launched 2022 — Growing Fast • Available on Carrefour, Amazon.eg, Talabat • Egypt Foods Group Brand • Innovation & Quality •</span>
+            </div>
+        </div>
+
+        <section style="padding: 0;">
+            <div class="product-bento">
+                <div class="bento-card reveal">
+                    <img src="https://egyptfoodsgroup.com/wp-content/uploads/2025/09/jaguar-core-1024x423.png" alt="Jaguar Creations">
+                    <h3>Creations</h3>
+                    <p>So cheesy, you'll never stop. Flagship premium line featuring crunchy cones.</p>
+                    <div class="bento-tags">
+                        <span class="bento-tag">Premium</span>
+                        <span class="bento-tag">Bold</span>
+                    </div>
+                </div>
+                <div class="bento-card reveal">
+                    <img src="https://egyptfoodsgroup.com/wp-content/uploads/2025/09/primr-1024x423.png" alt="Jaguar Prime">
+                    <h3>Prime</h3>
+                    <p>A symphony of crunch. Crispy corn kernels in 3 adventurous flavors.</p>
+                    <div class="bento-tags">
+                        <span class="bento-tag">New</span>
+                        <span class="bento-tag">Corn</span>
+                    </div>
+                </div>
+                <div class="bento-card reveal">
+                    <img src="https://egyptfoodsgroup.com/wp-content/uploads/2025/09/roars-1024x423.png" alt="Jaguar Roarz">
+                    <h3>Roarz</h3>
+                    <p>Flavors so intense, they roar! Baked crackers and pretzels.</p>
+                    <div class="bento-tags">
+                        <span class="bento-tag">Baked</span>
+                        <span class="bento-tag">Intense</span>
+                    </div>
+                </div>
+                <div class="bento-card reveal">
+                    <img src="https://egyptfoodsgroup.com/wp-content/uploads/2025/09/wonder-pops-1024x423.png" alt="Jaguar Wonderpops">
+                    <h3>Wonderpops</h3>
+                    <p>Your passport to snacking bliss. Premium butterfly popcorn line.</p>
+                    <div class="bento-tags">
+                        <span class="bento-tag">Popcorn</span>
+                        <span class="bento-tag">Light</span>
+                    </div>
+                </div>
+                <div class="bento-card reveal" style="justify-content: center; align-items: center; text-align: center;">
+                    <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--jaguar-gold);">Born Bold</div>
+                    <div style="font-size: 48px; font-weight: 900; margin: 10px 0;">5</div>
+                    <div style="font-size: 11px; opacity: 0.7;">Product Lines</div>
+                    <div style="margin-top: 20px; font-size: 10px; text-decoration: underline;">Egypt Foods Group</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="story-section">
+            <div class="container story-grid">
+                <div class="reveal">
+                    <h1>Born Bold. <br>Made in Egypt.</h1>
+                    <p style="opacity: 0.8; font-size: 16px; margin-top: 20px;">Launched in early 2022, Jaguar has rapidly become the leading corn snack innovation in the Egyptian market.</p>
+                    <div class="stats-grid">
+                        <div class="stat-box"><span class="stat-num">Jan 22</span><small>Launched</small></div>
+                        <div class="stat-box"><span class="stat-num">5</span><small>Lines</small></div>
+                        <div class="stat-box"><span class="stat-num">#1</span><small>Category</small></div>
+                    </div>
+                </div>
+                <div class="reveal">
+                    <img src="https://egyptfoodsgroup.com/wp-content/uploads/2025/06/jaguar2-1024x342.png" alt="Jaguar Brand" style="width: 100%; border: 1px solid rgba(245, 168, 0, 0.2);">
+                </div>
+            </div>
+        </section>
+    </script>
+
+    <script type="text/javascript">
+        const views = {};
+        document.querySelectorAll('script[type="text/template"]').forEach(tpl => {
+            views[tpl.id.replace('tpl-', '')] = tpl.innerHTML;
+        });
+
+        const app = {
+            init() {
+                window.addEventListener('hashchange', () => this.route());
+                window.addEventListener('load', () => this.route());
+                window.addEventListener('scroll', () => this.handleScroll());
+                this.route();
+            },
+
+            route() {
+                const hash = window.location.hash.slice(1) || 'home';
+                const container = document.getElementById('view-container');
+                window.scrollTo(0, 0);
+                if (views[hash]) {
+                    container.innerHTML = views[hash];
+                    this.updateNav(hash);
+                } else {
+                    window.location.hash = '#home';
+                }
+            },
+
+            updateNav(hash) {
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.toggle('active', link.getAttribute('data-route') === hash);
+                });
+            },
+
+            handleScroll() {
+                document.querySelectorAll('.reveal').forEach(el => {
+                    const rect = el.getBoundingClientRect();
+                    if (rect.top < window.innerHeight * 0.9) el.classList.add('active');
+                });
+                const nav = document.getElementById('navbar');
+                if (window.scrollY > 60) nav.classList.add('scrolled');
+                else nav.classList.remove('scrolled');
+            }
+        };
+
+        app.init();
+    </script>
+</body>
+</html>
